@@ -1,0 +1,72 @@
+@CHARSET "UTF-8";
+
+
+/* .head{
+	background-color: #7dc6e8;
+	
+} */
+ .from{
+	margin-right:auto;
+	margin-left:auto;/* 自动居中 */
+	max-width:400px;
+	max-height:1000px;
+	background: #F8F8F8;
+	color: #666;/* 字体颜色 */
+	padding: 30px 30px 20px 30px;/* 内边距 */
+	font: 12px Arial, Helvetica, sans-serif;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+.from h1{
+	font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+	padding: 20px 0px 20px 40px;
+	display: block;
+	margin: -30px -30px 10px -30px;
+	color: #FFF;
+	background-color:#7dc6e8;
+	text-shadow: 1px 1px 1px #949494;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-bottom: 1px solid #80ffff;	
+}
+.from label{
+	display: block;
+	margin: 0px 0px 5px;
+}
+/* .from label > span{
+	float: left;
+	margin-top: 10px;
+	color: #5E5E5E;
+} */
+.from input[type="text"],input[type="password"]{
+	color: #555;
+	height: 20px;
+	line-height: 10px;
+	width: 250px;
+}
+.button{
+	background-color: #7dc6e8;
+	border-radius: 5px;
+	text-shadow: 1px 1px 1px #949494;
+	padding: 10px 25px 10px 25px;
+	color: #FFF;
+	border: none;
+}
+.button:hover[type="submit"] {
+	background-color: #80ffff;
+}
+.btn{
+	background-color: #7dc6e8;
+	border-radius: 5px;
+	text-shadow: 1px 1px 1px #949494;
+	padding: 10px 25px 10px 25px;
+	color: #FFF;
+	border: none;
+}
+.btn:hover[type="button"] {
+	background-color: #80ffff;
+}
+
+

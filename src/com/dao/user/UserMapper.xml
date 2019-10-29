@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.user.UserMapper">
+	<!-- user表映射 -->
+	<resultMap type="User" id="userMap">
+		<id column="id" property="id"/>		
+		<result column="username" property="username"/>
+		<result column="password" property="password"/>
+		<result column="email" property="email"/>
+		<result property="role" column="role"/>
+		<!-- <result property="image" column="image"/>  -->
+	</resultMap>
+	<!-- worklog表映射 -->
+	<resultMap type="Worklog" id="worklogMap">
+		<id column="wid" property="wid"/>		
+		<result column="username" property="username"/>
+		<result column="year" property="year"/>
+		<result column="month" property="month"/>
+		<result column="day" property="day"/>
+		<result column="title" property="title"/>
+		<result column="description" property="description"/>
+		<result column="logtime" property="logtime"/>
+	</resultMap>
+	<!-- address表映射 -->
+	<resultMap type="Address" id="addressMap">
+		<id column="aid" property="aid"/>		
+		<result column="username" property="username"/>
+		<result column="name" property="name"/>
+		<result column="sex" property="sex"/>
+		<result column="mobile" property="mobile"/>
+		<result column="email" property="email"/>
+		<result column="qq" property="qq"/>
+		<result column="company" property="company"/>
+		<result column="address" property="address"/>
+		<result column="postcode" property="postcode"/>
+	</resultMap>
+	<!-- meeting表映射 -->
+	<resultMap type="Meeting" id="meetingMap">
+		<id column="mid" property="mid"/>		
+		<result column="sender" property="sender"/>
+		<result column="starttime" property="starttime"/>
+		<result column="endtime" property="endtime"/>
+		<result column="address" property="address"/>		
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+	</resultMap>
+	<!-- notice表映射 -->
+	<resultMap type="Notice" id="noticeMap">
+		<id column="nid" property="nid"/>		
+		<result column="sender" property="sender"/>		
+		<result column="title" property="title"/>
+		<result column="content" property="content"/>
+		<result column="sendtime" property="sendtime"/>
+	</resultMap>
+	<!-- schedule表映射 -->
+	<resultMap type="Schedule" id="scheduleMap">
+		<id column="sid" property="sid"/>
+		<result column="username" property="username"/>		
+		<result column="year" property="year"/>
+		<result column="month" property="month"/>
+		<result column="day" property="day"/>
+		<result column="plan" property="plan"/>
+	</resultMap>
+	<!-- sms表映射 -->
+	<resultMap type="Sms" id="smsMap">
+		<id column="id" property="id"/>
+		<result column="username" property="username"/>		
+		<result column="sender" property="sender"/>	
+		<result column="message" property="message"/>
+		<result column="sendtime" property="sendtime"/>
+		<result column="isRead" property="isRead"/>
+	</resultMap>
+	<!-- 登陆 -->
+	<select id="login" resultMap="userMap" parameterType="String">
+		select * from user where username=#{username}
+	</select>
+	<!-- 查找用户 -->
+	<select id="findUser" resultMap="userMap">
+		select * from user where username=#{username}
+	</select>
+	<!-- 通讯录查询 -->
+	<select id="find" resultMap="addressMap">
+		select * from address where username=#{username}		
+			<if test="name != null and name !=''">
+			 and name like CONCAT ('%',#{name},'%') 
+			</if>
+			<if test="mobile != null and mobile !=''">
+			 and mobile like CONCAT ('%',#{mobile},'%') 
+			</if>				
+		order by aid DESC limit #{start},#{size}
+	</select>
+	<!-- 数据总条数查询 -->
+    <select id="totalCount" resultType="Int">
+        select count(1) as count from address where username=#{username}		
+			<if test="name != null and name !=''">
+			 and name like CONCAT ('%',#{name},'%') 
+			</if>
+			<if test="mobile != null and mobile !=''">
+			 and mobile like CONCAT ('%',#{mobile},'%') 
+			</if>
+  	</select>
+  	<!-- 用户查询 -->
+	<select id="findU" resultMap="userMap">
+		select * from user
+			<where>		
+				<if test="username != null and username !=''">
+			 	and username like CONCAT ('%',#{username},'%') 
+				</if>
+				<if test="role != null and role !=''">
+			 	and role like CONCAT ('%',#{role},'%') 
+				</if>
+			</where> 				
+		order by role DESC limit #{start},#{size}
+	</select>
+	<!-- 用户总条数查询 -->
+    <select id="totalU" resultType="Int">
+        select count(1) as count from user		
+			<where>		
+				<if test="username != null and username !=''">
+			 	and username like CONCAT ('%',#{username},'%') 
+				</if>
+				<if test="role != null and role !=''">
+			 	and role like CONCAT ('%',#{role},'%') 
+				</if>
+			</where>
+  	</select>
+  	<!-- 会议查询 -->
+	<select id="findM" resultMap="meetingMap">
+		select * from meeting
+			<where>		
+				<if test="sender != null and sender !=''">
+			 	and sender like CONCAT ('%',#{sender},'%') 
+				</if>
+				<if test="address != null and address !=''">
+			 	and address like CONCAT ('%',#{address},'%') 
+				</if>
+				<if test="title != null and title !=''">
+			 	and title like CONCAT ('%',#{title},'%') 
+				</if>
+			</where> 				
+		order by mid DESC limit #{start},#{size}
+	</select>
+	<!-- 会议总条数查询 -->
+    <select id="totalM" resultType="Int">
+        select count(1) as count from meeting
+			<where>		
+				<if test="sender != null and sender !=''">
+			 	and sender like CONCAT ('%',#{sender},'%') 
+				</if>
+				<if test="address != null and address !=''">
+			 	and address like CONCAT ('%',#{address},'%') 
+				</if>
+				<if test="title != null and title !=''">
+			 	and title like CONCAT ('%',#{title},'%') 
+				</if>
+			</where>
+  	</select>
+  	<!-- 公告查询 -->
+	<select id="findN" resultMap="noticeMap">
+		select * from notice
+			<where>		
+				<if test="sender != null and sender !=''">
+			 	and sender like CONCAT ('%',#{sender},'%') 
+				</if>
+				<if test="title != null and title !=''">
+			 	and title like CONCAT ('%',#{title},'%') 
+				</if>
+			</where> 				
+		order by nid DESC limit #{start},#{size}
+	</select>
+	<!-- 公告总条数查询 -->
+    <select id="totalN" resultType="Int">
+        select count(1) as count from notice
+			<where>		
+				<if test="sender != null and sender !=''">
+			 	and sender like CONCAT ('%',#{sender},'%') 
+				</if>
+				<if test="title != null and title !=''">
+			 	and title like CONCAT ('%',#{title},'%') 
+				</if>
+			</where> 
+  	</select>
+  	<!-- 日程查询 -->
+	<select id="findS" resultMap="scheduleMap">
+		select * from schedule where username=#{username}		
+			<if test="day != null and day !=''">
+			 and day like CONCAT ('%',#{day},'%') 
+			</if>
+			<if test="plan != null and plan !=''">
+			 and plan like CONCAT ('%',#{plan},'%') 
+			</if>				
+		order by sid DESC limit #{start},#{size}
+	</select>
+	<!-- 日程数据总条数查询 -->
+    <select id="totalS" resultType="Int">
+        select count(1) as count from schedule where username=#{username}		
+			<if test="day != null and day !=''">
+			 and day like CONCAT ('%',#{day},'%') 
+			</if>
+			<if test="plan != null and plan !=''">
+			 and plan like CONCAT ('%',#{plan},'%') 
+			</if>				
+  	</select>
+  	<!-- 日志查询 -->
+	<select id="findW" resultMap="worklogMap">
+		select * from worklog where username=#{username}		
+			<if test="day != null and day !=''">
+			 and day like CONCAT ('%',#{day},'%') 
+			</if>
+			<if test="title != null and title !=''">
+			 and title like CONCAT ('%',#{title},'%') 
+			</if>				
+		order by wid DESC limit #{start},#{size}
+	</select>
+	<!-- 日志数据总条数查询 -->
+    <select id="totalW" resultType="Int">
+        select count(1) as count from worklog where username=#{username}		
+			<if test="day != null and day !=''">
+			 and day like CONCAT ('%',#{day},'%') 
+			</if>
+			<if test="title != null and title !=''">
+			 and title like CONCAT ('%',#{title},'%') 
+			</if>				
+  	</select>
+  	<!-- 短消息查询 -->
+	<select id="findSms" resultMap="smsMap">
+		select * from sms where username=#{username}		
+			<if test="sender != null and sender !=''">
+			 and sender like CONCAT ('%',#{sender},'%') 
+			</if>
+			<if test="isRead != null and isRead !=''">
+			 and isRead like CONCAT ('%',#{isRead},'%') 
+			</if>				
+		order by id DESC limit #{start},#{size}
+	</select>
+	<!-- 短消息数据总条数查询 -->
+    <select id="totalSms" resultType="Int">
+        select count(1) as count from sms where username=#{username}		
+			<if test="sender != null and sender !=''">
+			 and sender like CONCAT ('%',#{sender},'%') 
+			</if>
+			<if test="isRead != null and isRead !=''">
+			 and isRead like CONCAT ('%',#{isRead},'%') 
+			</if>				
+  	</select>
+  	<!-- 查询单个通讯录  -->
+  	<select id="viewAddress" resultMap="addressMap">
+  		select * from address where aid=#{aid}
+  	</select>
+  	<!-- 添加单个通讯录 -->
+	<insert id="addAddress" parameterType="Address">
+            insert into address (username,name,sex,mobile,email,qq,company,address,postcode) 
+                    values (#{username},#{name},#{sex},#{mobile},#{email},#{qq},#{company},#{address},#{postcode})
+  	</insert>
+  	<!-- 修改单个通讯录 -->
+  	<update id="mdfAddress" parameterType="Address">
+             update address 
+                 <trim prefix="set" suffixOverrides="," suffix="where aid = #{aid}">                   
+                                      
+                    <if test="name != null">name=#{name},</if>
+                    <if test="sex != null">sex=#{sex},</if>
+                    <if test="mobile != null">mobile=#{mobile},</if>
+                    <if test="email != null">email=#{email},</if> 
+                    <if test="qq != null">qq=#{qq},</if> 
+                    <if test="company != null">company=#{company},</if> 
+                    <if test="address != null">address=#{address},</if> 
+                    <if test="postcode != null">postcode=#{postcode},</if>                   
+                 </trim>
+   	</update>
+   	<!-- 删除联系人 -->
+   	<delete id="delAddress" parameterType="Integer">
+                delete from address where aid=#{aid}
+   	</delete>
+   	<!-- 查询用户  -->
+  	<select id="viewUser" resultMap="userMap">
+  		select * from user where id=#{id}
+  	</select>
+  	<!-- 添加用户 -->
+	<insert id="addUser" parameterType="User">
+            insert into user (username,password,email,role) 
+                    values (#{username},#{password},#{email},#{role})
+  	</insert>
+  	<!-- 修改用户 -->
+  	<update id="mdfUser" parameterType="User">
+             update user 
+                 <trim prefix="set" suffixOverrides="," suffix="where id = #{id}">                   
+                                      
+                    <if test="username != null">username=#{username},</if>
+                    <if test="password != null">password=#{password},</if>
+                    <if test="email != null">email=#{email},</if> 
+                    <if test="role != null">role=#{role},</if>                
+                 </trim>
+   	</update>
+   	<!-- 删除用户信息 -->
+   	<delete id="delUser" parameterType="Integer">
+                delete from user where id=#{delId}
+   	</delete>
+   	<!-- 添加会议 -->
+	<insert id="addMeeting" parameterType="Meeting">
+            insert into meeting (sender,starttime,endtime,address,title,content) 
+                    values (#{sender},#{starttime},#{endtime},#{address},#{title},#{content})
+  	</insert>
+  	<!-- 查询会议  -->
+  	<select id="viewMeeting" resultMap="meetingMap">
+  		select * from meeting where mid=#{mid}
+  	</select>
+  	<!-- 修改会议 -->
+  	<update id="mdfMeeting" parameterType="Meeting">
+             update meeting 
+                 <trim prefix="set" suffixOverrides="," suffix="where mid = #{mid}">                                      
+                    <if test="starttime != null">starttime=#{starttime},</if>
+                    <if test="endtime != null">endtime=#{endtime},</if>
+                    <if test="address != null">address=#{address},</if> 
+                    <if test="title != null">title=#{title},</if>
+                    <if test="content != null">content=#{content},</if>                  
+                 </trim>
+   	</update>
+   	<!-- 取消会议 -->
+   	<delete id="delMeeting" parameterType="Integer">
+                delete from meeting where mid=#{mid}
+   	</delete>
+   	
+   	<!-- 添加公告 -->
+	<insert id="addNotice" parameterType="Notice">
+            insert into notice (sender,title,content,sendtime) 
+                    values (#{sender},#{title},#{content},#{sendtime})
+  	</insert>
+  	<!-- 查询公告  -->
+  	<select id="viewNotice" resultMap="noticeMap">
+  		select * from notice where nid=#{nid}
+  	</select>
+  	<!-- 修改公告 -->
+  	<update id="mdfNotice" parameterType="Notice">
+             update notice 
+                 <trim prefix="set" suffixOverrides="," suffix="where nid = #{nid}">                                      
+                    <if test="title != null">title=#{title},</if>
+                    <if test="content != null">content=#{content},</if>
+                    <if test="sendtime != null">sendtime=#{sendtime},</if>                    
+                 </trim>
+   	</update>
+   	<!-- 取消公告 -->
+   	<delete id="delNotice" parameterType="Integer">
+                delete from notice where nid=#{nid}
+   	</delete>
+   	<!-- 查询日程  -->
+  	<select id="viewSchedule" resultMap="scheduleMap">
+  		select * from schedule where sid=#{sid}
+  	</select>
+  	<!-- 添加日程 -->
+	<insert id="addSchedule" parameterType="Schedule">
+            insert into schedule (username,year,month,day,plan) 
+                    values (#{username},#{year},#{month},#{day},#{plan})
+  	</insert>
+  	<!-- 修改日程 -->
+  	<update id="mdfSchedule" parameterType="Schedule">
+             update schedule 
+                 <trim prefix="set" suffixOverrides="," suffix="where sid = #{sid}">                  
+                    <if test="year != null">year=#{year},</if>
+                    <if test="month != null">month=#{month},</if>
+                    <if test="day != null">day=#{day},</if>
+                    <if test="plan != null">plan=#{plan},</if>                    
+                 </trim>
+   	</update>
+   	<!-- 删除日程 -->
+   	<delete id="delSchedule" parameterType="Integer">
+                delete from schedule where sid=#{sid}
+   	</delete>
+   	<!-- 查询日志  -->
+  	<select id="viewWorklog" resultMap="worklogMap">
+  		select * from worklog where wid=#{wid}
+  	</select>
+  	<!-- 添加日志 -->
+	<insert id="addWorklog" parameterType="Worklog">
+            insert into worklog (username,title,year,month,day,description,logtime) 
+                    values (#{username},#{title},#{year},#{month},#{day},#{description},#{logtime})
+  	</insert>
+  	<!-- 修改日志 -->
+  	<update id="mdfWorklog" parameterType="Worklog">
+             update worklog 
+                 <trim prefix="set" suffixOverrides="," suffix="where wid = #{wid}">                  
+                    <if test="title != null">title=#{title},</if>
+                    <if test="year != null">year=#{year},</if>
+                    <if test="month != null">month=#{month},</if>
+                    <if test="day != null">day=#{day},</if>
+                    <if test="description != null">description=#{description},</if>
+                    <if test="logtime != null">logtime=#{logtime},</if>                    
+                 </trim>
+   	</update>
+   	<!-- 删除日志 -->
+   	<delete id="delWorklog" parameterType="Integer">
+                delete from worklog where wid=#{wid}
+   	</delete>
+   	<!-- 查询短消息  -->
+  	<select id="viewSms" resultMap="smsMap">
+  		select * from sms where id=#{id}
+  	</select>
+  	<!-- 发送短消息 -->
+	<insert id="addSms" parameterType="Sms">
+            insert into sms (username,sender,message,sendtime,isRead) 
+                    values (#{username},#{sender},#{message},now(),#{isRead})
+  	</insert>
+  	<!-- 已读消息 -->
+  	<update id="mdfSms" parameterType="Sms">
+  		update sms set isRead=1 where id=#{id}
+  	</update>
+  	<!-- 用户查询 -->
+    <select id="userlist" resultMap="userMap">
+    	select username from user
+    </select>
+    <!-- 删除短消息 -->
+   	<delete id="delSms" parameterType="Integer">
+                delete from sms where id=#{id}
+   	</delete>
+  	<!-- 修改密码 -->
+   	<update id="updatePwd" parameterType="Integer">
+             update user set password=#{password} where id=#{id}
+ 	</update>
+ 	<!-- 修改个人信息 -->
+  	<update id="updatePerson" parameterType="String">
+             update user set username=#{username},email=#{email} where id=#{id}
+    </update>
+    
+   	
+</mapper>
